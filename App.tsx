@@ -8,18 +8,33 @@
  * @format
  */
 
+import {useNFTs} from '@thirdweb-dev/react';
+import {useContract, useNFT, useNFTBalance} from '@thirdweb-dev/react';
 import {ThirdwebProvider} from '@thirdweb-dev/react';
-import {ChainId, ThirdwebSDK} from '@thirdweb-dev/sdk';
+import {ChainId, SmartContract, ThirdwebSDK} from '@thirdweb-dev/sdk';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
   Button,
+  Image,
   SafeAreaView,
   StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 
 const sdk = new ThirdwebSDK('mumbai');
+
+function parseIpfsUri(uri?: string) {
+  if (!uri) {
+    return '';
+  }
+
+  let hash = uri.match(/^ipfs:(\/\/)?(ipfs\/)?(.*)$/i)?.[3];
+  return `https://ipfs.io/ipfs/${hash}`;
+}
 
 const App = () => {
   return (
@@ -30,69 +45,132 @@ const App = () => {
 };
 
 const AppInner = () => {
-  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+  const [isLoadingContract, setIsLoadingContract] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const contract = await sdk.getContract(
-        '0xd5a21f02E2bd04e1052FA7bccE229a391C05b404',
-        'nft-drop',
-      );
-      // Alert.alert('Contract', 'contract');
-      const walletAddress = '0x0beECa30ea02FB3B6258e056d8d6Cff6fB7d7240';
-      const balance = await contract.balanceOf(walletAddress);
+  const [contractAddress, setContractAddress] = useState<string>();
+  const [contractType, setContractType] = useState<string>();
 
-      const tokenId = 0;
-      const nft = await contract.get(tokenId);
+  const [contract, setContract] = useState<SmartContract>();
 
-      Alert.alert(
-        'Balance',
-        `The balance is ${balance}. The name is "${nft.metadata.name}"`,
-      );
-      setIsLoadingBalance(false);
-    };
-
-    if (isLoadingBalance) {
-      fetchBalance();
+  const onButtonPress = async () => {
+    if (isLoadingContract) {
+      return;
     }
-  }, [isLoadingBalance, setIsLoadingBalance]);
 
-  const onButtonPress = () => {
-    if (!isLoadingBalance) {
-      setIsLoadingBalance(true);
+    if (!contractAddress) {
+      Alert.alert('Bad Input', 'Please, specify a correct contract address');
+      return;
     }
+
+    setIsLoadingContract(true);
+    // '0xd5a21f02E2bd04e1052FA7bccE229a391C05b404',
+    //   'nft-drop',
+    let newContract;
+    try {
+      if (contractType) {
+        newContract = await sdk.getContract(contractAddress, contractType);
+      } else {
+        newContract = await sdk.getContract(contractAddress);
+      }
+    } catch (error) {
+      Alert.alert('Error', `Error getting the contract: ${error}`);
+    }
+
+    setContract(newContract);
+    setIsLoadingContract(false);
   };
 
   return (
     <SafeAreaView style={styles.backgroundStyle}>
-      <Button title={'Get NFT Info'} onPress={onButtonPress} />
-      {isLoadingBalance ? <ActivityIndicator /> : null}
+      <TextInput
+        style={styles.textInput}
+        placeholder="Contract Address"
+        onChangeText={setContractAddress}
+      />
+      <TextInput
+        style={styles.textInput}
+        placeholder="Contract Type (optional)"
+        onChangeText={setContractType}
+      />
+      <Button title={'Get Contract Info'} onPress={onButtonPress} />
+      {isLoadingContract ? <ActivityIndicator /> : null}
+      <NftBalance contract={contract} />
     </SafeAreaView>
   );
 };
 
+const NftBalance = ({contract}: {contract?: SmartContract}) => {
+  const {
+    data: nfts,
+    status: nftStatus,
+    isLoading: isNftLoading,
+    error: nftError,
+  } = useNFTs(contract, {start: 0, count: 2});
+  const {
+    data: ownerBalance,
+    status: balanceStatus,
+    isLoading: isLoadingBalance,
+    error: balanceError,
+  } = useNFTBalance(contract, '0x0beECa30ea02FB3B6258e056d8d6Cff6fB7d7240', 0);
+
+  console.log(`balanceError: ${balanceError}`);
+  console.log(`isLoadingBalance: ${isLoadingBalance}`);
+  console.log(`balanceData: ${ownerBalance}`);
+  console.log(`balanceStatus: ${balanceStatus}`);
+
+  console.log(`nftError: ${nftError}`);
+  console.log(`isLoadingNft: ${isNftLoading}`);
+  console.log(`nftStatus: ${nftStatus}`);
+
+  if (!contract) {
+    return null;
+  }
+
+  return (
+    <View style={styles.nftBalance}>
+      {ownerBalance !== undefined ? (
+        <Text>Owner balance: {ownerBalance.toNumber()}</Text>
+      ) : null}
+      {nfts && nfts.length > 0
+        ? nfts.map(nft => {
+            console.log(nft.metadata.name);
+            return (
+              <View key={nft.metadata.name} style={styles.nftView}>
+                <Text>Name: {nft.metadata.name}</Text>
+                {nft?.metadata.image ? (
+                  <Image
+                    style={styles.image}
+                    source={{uri: nft?.metadata.image}}
+                  />
+                ) : null}
+              </View>
+            );
+          })
+        : null}
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
+  nftBalance: {
+    marginTop: 20,
+  },
+  nftView: {
+    marginTop: 20,
+  },
+  image: {
+    height: 150,
+  },
+  textInput: {
+    borderWidth: 0.2,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
   backgroundStyle: {
     flex: 1,
-    alignContent: 'center',
-    justifyContent: 'flex-start',
     margin: 50,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+    justifyContent: 'flex-start',
+    alignContent: 'center',
   },
 });
 

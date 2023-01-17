@@ -3,7 +3,7 @@
  */
 
 // Step 1: Import the crypto getRandomValues shim (**BEFORE** the ethers shims)
-import 'react-native-get-random-values';
+import 'crypto';
 
 // Step 2: Import the ethers shims (**BEFORE** the thirdweb SDK)
 import '@ethersproject/shims';
