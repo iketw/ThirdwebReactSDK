@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@thirdweb-dev/react": {
-      "signature": "bbc1e7437a6c7fef844fd0a816a71791",
+      "signature": "9ad8613236d66ae82e2e18f65438004d",
       "file": true,
       "replaced": "^3.6.9"
     }

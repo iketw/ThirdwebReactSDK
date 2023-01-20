@@ -4916,17 +4916,23 @@ function isMobile() {
  * @public
  */
 function useMetamask() {
+  console.log("useMetamask() called");
   const wagmiContext = wagmi.useContext();
   invariant__default["default"](wagmiContext, `useMetamask() can only be used inside <ThirdwebProvider />. If you are using <ThirdwebSDKProvider /> you will have to use your own wallet-connection logic.`);
   const [connectors, connect] = useConnect.useConnect();
+  console.log("connectors: " + JSON.stringify(connectors.data.connectors, null, 2));
+  console.log("connect: " + JSON.stringify(connect, null, 2));
   const isMetaMaskInjected = typeof window !== "undefined" && window.ethereum?.isMetaMask;
-  const shouldUseWalletConnect = isMobile() && !isMetaMaskInjected;
+  const shouldUseWalletConnect = true; //isMobile() && !isMetaMaskInjected;
+
+  console.log("isMobile: " + isMobile());
+  console.log("shouldUseWalletConnect: " + JSON.stringify(shouldUseWalletConnect, null, 2));
 
   // injected connector
   const injectedConnector = connectors.data.connectors.find(c => c.id === "injected");
   // walletConnect connector
   const walletConnectConnector = connectors.data.connectors.find(c => c.id === "walletConnect");
-  const connector = (shouldUseWalletConnect ? walletConnectConnector : injectedConnector) || injectedConnector;
+  const connector = (walletConnectConnector ) || injectedConnector;
   invariant__default["default"](connector, "No connector found, please make sure you provide the InjectedConnector to your <ThirdwebProvider />");
   return async () => {
     // if we don't have an injected provider

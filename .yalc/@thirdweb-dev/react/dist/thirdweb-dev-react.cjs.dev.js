@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var useWalletLink = require('./useWalletLink-6022875e.cjs.dev.js');
+var useWalletLink = require('./useWalletLink-4fc7c26c.cjs.dev.js');
 var useConnect = require('./useConnect-4158f2e2.cjs.dev.js');
 var sdk = require('@thirdweb-dev/sdk');
 var requiredParam = require('./required-param-581f26ec.cjs.dev.js');
