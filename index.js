@@ -11,6 +11,10 @@ import '@ethersproject/shims';
 // Step 3: Wallet Connect React Native Compat
 import '@walletconnect/react-native-compat';
 
+if (__DEV__) {
+  require('basil-ws-flipper').wsDebugPlugin;
+}
+
 import {AppRegistry} from 'react-native';
 import App from './src/App';
 import {name as appName} from './app.json';
