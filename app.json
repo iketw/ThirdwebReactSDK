@@ -1,4 +1,11 @@
 {
   "name": "ThirdwebReactSDK",
-  "displayName": "ThirdwebReactSDK"
+  "displayName": "ThirdwebReactSDK",
+  "extra": {
+    "eas": {
+      "projectId": "9ea7ee16-780a-49e3-aaf8-0d7bb30d1aba"
+    }
+  },
+  "owner": "jorgetw",
+  "slug": "thirdwebrnsample"
 }

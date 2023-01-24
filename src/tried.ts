@@ -1,3 +1,76 @@
+    // const address = '0x0beECa30ea02FB3B6258e056d8d6Cff6fB7d7240'; // address of the wallet you want to claim the NFTs
+    // const quantity = 1; // how many unique NFTs you want to claim
+
+    // sdk?.wallet.sign('hello world').then(tx => {
+    //   console.log('response', tx);
+    // });
+
+    // const task = await contract.erc721.getClaimTransaction(address, quantity);
+    // const hex = await task.encodeFunctionData();
+
+    // const params = [
+    //   {
+    //     from: '0x0beECa30ea02FB3B6258e056d8d6Cff6fB7d7240',
+    //     to: contract.getAddress(),
+    //     data: hex, //'0x',
+    //     value: '0x0',
+    //   },
+    // ];
+
+    // const requestParams = {
+    //   method: 'eth_sendTransaction',
+    //   params: params, // stringified JSON
+    // };
+
+    // // console.log('requestParams', requestParams);
+    // provider.request(requestParams).then(result => {
+    //   // seems to be a signed transaction, need to execute it.
+    //   console.log('Result: ', result);
+    //   // provider.client
+    //   //   .respond({
+    //   //     topic: provider.session.topic,
+    //   //     response: {
+    //   //       id: 1,
+    //   //       jsonrpc: '2.0',
+    //   //       result: result,
+    //   //     },
+    //   //   })
+    //   //   .then(result => {
+    //   //     console.log('responded');
+    //   //   })
+    //   //   .catch(error => {
+    //   //     console.log('error', error);
+    //   //   });
+    // });
+
+    // contract.erc721
+    //   .transfer('0xE79ee09bD47F4F5381dbbACaCff2040f2FbC5803', 1)
+    //   .then(tx => {
+    //     console.log('tx', tx);
+    //   })
+    //   .catch(error => {
+    //     console.log('error', error);
+    //   });
+
+    // web3Provider
+    //   .getSigner()
+    //   .sendTransaction(params[0])
+    //   .then(tx => {
+    //     console.log('tx', tx);
+    //   });
+
+    // console.log('Session: ' + JSON.stringify(provider.session, null, 2));
+
+    // metadata.redirect.native is undefined for trust wallet
+    // Linking.openURL(provider.session.peer.metadata.redirect.native); // const claimedNFT = await tx[0].data(); // (optional) get the claimed NFT metadata // const claimedTokenId = tx[0].id; // the id of the NFT claimed // const receipt = tx[0].receipt; // the transaction receipt // const tx = await contract?.erc721.claim(quantity); // claims sequential NFTs
+
+
+    // ---------- Above was all tried and not working. ----------
+    
+    
+    
+    
+    
     // Linking.openURL(
     //   'https://link.trustwallet.com/wc?uri=wc%3A69b1612cf8c2747e12d4a9c5003f4dc47128248e48bab503263d784944c0f5c1%402%3Frelay-protocol%3Dirn%26symKey%3D2e649ad0ca823d9620fc7cd1edf8d79f800b03ff526d6546bebd6d742cecd7ee',
     // );

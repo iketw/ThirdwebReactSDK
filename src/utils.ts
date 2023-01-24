@@ -13,6 +13,8 @@ import { ChainId } from '@thirdweb-dev/sdk';
 import { providers } from 'ethers';
 import { Linking } from 'react-native';
 import { provider } from './UniversalProvider';
+import { ENV_PROJECT_ID } from '@env';
+import { DEFAULT_CHAINS } from './constants';
 
 //     return `${safeAppUrl}wc?uri=${encodedWcUrl}`
 // };
@@ -36,11 +38,11 @@ export function deepLink(appUrl: string, uri?: string) {
         throw Error('No URI to deep link to');
     }
 
-    console.log('uri', uri);
+    log('uri', uri);
 
     const formattedUri = formatUniversalUrl(appUrl, uri);
 
-    console.log('formattedUri', formattedUri);
+    log('formattedUri', formattedUri);
     Linking.openURL(formattedUri);
 
     // Linking.openURL(uri.replace('wc:', 'wc://'));
@@ -53,10 +55,7 @@ export function getSigner({ chainId }: { chainId?: number } = {}) {
         ...provider,
         async request(args) {
             console.log('Custom request', args);
-            return await provider.request(
-                args,
-                `${'eip155'}:${chainId ?? chainId_}`,
-            );
+            return await provider.request(args, `${'eip155'}:${chainId ?? chainId_}`);
         },
     } as providers.ExternalProvider;
 
@@ -67,4 +66,28 @@ export function getSigner({ chainId }: { chainId?: number } = {}) {
     });
 
     return web3Provider.getSigner();
+}
+
+export const fetchWallets = async () => {
+    fetch(
+        `https://explorer-api.walletconnect.com/v3/wallets?projectId=${ENV_PROJECT_ID}&version=2&entries=50&page=1`,
+    ).then(async response => {
+        const json = await response.json();
+        console.log('response', JSON.stringify(json));
+    });
+};
+
+export const log = (message: string, ...optionalParams: any[]) => {
+    console.log('(JD)', message, ...optionalParams);
+};
+
+export const getAllChainNamespaces = () => {
+    const namespaces: string[] = [];
+    DEFAULT_CHAINS.forEach(chainId => {
+        const [namespace] = chainId.split(':');
+        if (!namespaces.includes(namespace)) {
+            namespaces.push(namespace);
+        }
+    });
+    return namespaces;
 };
