@@ -117,23 +117,23 @@ export function ClientContextProvider({
       }
 
       _client.on('display_uri', async (uri: string) => {
-        console.log('EVENT', 'QR Code Modal open');
+        log('EVENT', 'QR Code Modal open');
         setDisplayUri(uri);
         deepLink('', uri);
       });
 
       // Subscribe to session ping
       _client.on('session_ping', ({id, topic}: {id: number; topic: string}) => {
-        console.log('EVENT', 'session_ping');
-        console.log(id, topic);
+        log('EVENT', 'session_ping');
+        log(id, topic);
       });
 
       // Subscribe to session event
       _client.on(
         'session_event',
         ({event, chainId}: {event: any; chainId: string}) => {
-          console.log('EVENT', 'session_event');
-          console.log(event, chainId);
+          log('EVENT', 'session_event');
+          log(event, chainId);
         },
       );
 
@@ -147,7 +147,7 @@ export function ClientContextProvider({
           topic: string;
           session: SessionTypes.Struct;
         }) => {
-          console.log('EVENT', 'session_updated');
+          log('EVENT', 'session_updated');
           setSession(sessionP);
         },
       );
@@ -156,11 +156,31 @@ export function ClientContextProvider({
       _client.on(
         'session_delete',
         ({id, topic}: {id: number; topic: string}) => {
-          console.log('EVENT', 'session_deleted');
-          console.log(id, topic);
+          log('EVENT', 'session_deleted');
+          log(id, topic);
           resetApp();
         },
       );
+
+      _client.on(
+        'subscription_deleted',
+        ({id, topic}: {id: number; topic: string}) => {
+          log('EVENT', 'subscription_deleted');
+          log(id, topic);
+          resetApp();
+        },
+      );
+
+      _client.client.on(
+        'session_update',
+        (namespaces) => {
+          log('EVENT', 'session_updated_client', namespaces);
+        },
+      );
+
+      _client.client.on('session_delete', (id, topic) => {
+        log('EVENT', 'session_delete_client', id, topic);
+      });
     },
     [],
   );
@@ -238,7 +258,7 @@ export function ClientContextProvider({
 
       createWeb3Provider(ethereumProvider);
       const _accounts = await ethereumProvider.enable();
-      console.log('_accounts', _accounts);
+      log('_accounts', _accounts);
       setAccounts(_accounts);
       setSession(sessionC);
       setChain(caipChainId);
@@ -258,11 +278,11 @@ export function ClientContextProvider({
 
       const chainDataC = allNamespaceAccounts[0].split(':');
       const caipChainId = `${chainDataC[0]}:${chainDataC[1]}`;
-      console.log('restored caipChainId', caipChainId);
+      log('restored caipChainId', caipChainId);
       setChain(caipChainId);
       setSession(_session);
       setAccounts(allNamespaceAccounts.map(account => account.split(':')[2]));
-      console.log('RESTORED', allNamespaceChains, allNamespaceAccounts);
+      log('RESTORED', allNamespaceChains, allNamespaceAccounts);
       createWeb3Provider(ethereumProvider);
     },
     [ethereumProvider, createWeb3Provider],
@@ -274,6 +294,7 @@ export function ClientContextProvider({
         throw new Error('WalletConnect is not initialized');
       }
       const pairingsC = provider.client.pairing.getAll({active: true});
+      log("pairingsC", pairingsC);
       // populates existing pairings to state
       setPairings(pairingsC);
       if (typeof session !== 'undefined') {
@@ -282,7 +303,7 @@ export function ClientContextProvider({
       // populates (the last) existing session to state
       if (provider.client.session.length > 0) {
         const _session = provider.client.session.getAll()[0];
-        console.log('RESTORED SESSION:', _session);
+        log('RESTORED SESSION:', _session);
         await onSessionConnected(_session);
         return _session;
       }
@@ -302,6 +323,7 @@ export function ClientContextProvider({
 
   useEffect(() => {
     if (ethereumProvider) {
+      log('subscribing to provider events');
       _subscribeToProviderEvents(ethereumProvider);
     }
   }, [_subscribeToProviderEvents, ethereumProvider]);

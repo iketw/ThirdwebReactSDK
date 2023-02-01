@@ -8,9 +8,8 @@
  * @format
  */
 
-import {useContract, useSDK, useUnclaimedNFTs} from '@thirdweb-dev/react';
-import {useNFTs, useNFTBalance} from '@thirdweb-dev/react';
-import {ThirdwebProvider} from '@thirdweb-dev/react';
+import {useContract, useSDK, useUnclaimedNFTs} from '@thirdweb-dev/react-core';
+import {useNFTs, useNFTBalance} from '@thirdweb-dev/react-core';
 import {ChainId, SmartContract} from '@thirdweb-dev/sdk';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -36,7 +35,7 @@ export const ConnectionSection = ({
   return (
     <View>
       {session ? (
-        <Text>Connected to: {session.peer.metadata.name}</Text>
+        <Text style={styles.header}>Connected to: {session.peer.metadata.name}</Text>
       ) : (
         <TouchableOpacity style={styles.touchable} onPress={onConnectPress}>
           <Text style={styles.connectText}>Connect Wallet</Text>
@@ -47,6 +46,10 @@ export const ConnectionSection = ({
 };
 
 const styles = StyleSheet.create({
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   touchable: {
     marginTop: 10,
     backgroundColor: 'blue',

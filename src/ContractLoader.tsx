@@ -8,9 +8,8 @@
  * @format
  */
 
-import {useContract, useSDK, useUnclaimedNFTs} from '@thirdweb-dev/react';
-import {useNFTs, useNFTBalance} from '@thirdweb-dev/react';
-import {ThirdwebProvider} from '@thirdweb-dev/react';
+import {useContract, useSDK, useUnclaimedNFTs} from '@thirdweb-dev/react-core';
+import {useNFTs, useNFTBalance} from '@thirdweb-dev/react-core';
 import {ChainId, SmartContract} from '@thirdweb-dev/sdk';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -92,6 +91,7 @@ const styles = StyleSheet.create({
   textInput: {
     borderWidth: 0.2,
     borderRadius: 5,
+    borderColor: 'white',
     marginBottom: 10,
   },
   backgroundStyle: {

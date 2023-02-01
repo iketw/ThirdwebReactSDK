@@ -1,5 +1,5 @@
 import { RequiredParam } from "../../../core/query-utils/required-param";
-import { ClaimNFTParams, ClaimNFTReturnType, DelayedRevealLazyMintInput, DropContract, RevealLazyMintInput, NFTContract, RevealableContract } from "../../types";
+import { ClaimNFTParams, ClaimNFTReturnType, DelayedRevealLazyMintInput, DropContract, RevealLazyMintInput, RevealableContract } from "../../types";
 import { NFTMetadataInput, QueryAllParams, UploadProgressEvent } from "@thirdweb-dev/sdk";
 import { NFTDrop } from "@thirdweb-dev/sdk/dist/declarations/src/evm/contracts/prebuilt-implementations/nft-drop";
 /** **********************/
@@ -56,7 +56,7 @@ export declare function useUnclaimedNFTs(contract: RequiredParam<NFTDrop>, query
  * @twfeature ERC721LazyMintable | ERC1155LazyMintable
  * @beta
  */
-export declare function useClaimedNFTs(contract: RequiredParam<NFTContract>, queryParams?: QueryAllParams): import("@tanstack/react-query").UseQueryResult<import("@thirdweb-dev/sdk").NFT[], unknown>;
+export declare function useClaimedNFTs(contract: RequiredParam<NFTDrop>, queryParams?: QueryAllParams): import("@tanstack/react-query").UseQueryResult<import("@thirdweb-dev/sdk").NFT[], unknown>;
 /**
  *
  * @param contract - an instance of a {@link NFTDrop}

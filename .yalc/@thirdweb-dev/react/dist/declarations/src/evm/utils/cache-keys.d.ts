@@ -54,6 +54,7 @@ export declare const cacheKeys: {
             };
             readonly drop: {
                 readonly getAllUnclaimed: (contractAddress: RequiredParam<ContractAddress>, params?: QueryAllParams) => QueryKey;
+                readonly getAllClaimed: (contractAddress: RequiredParam<ContractAddress>, params?: QueryAllParams) => QueryKey;
                 readonly totalUnclaimedSupply: (contractAddress: RequiredParam<ContractAddress>) => QueryKey;
                 readonly totalClaimedSupply: (contractAddress: RequiredParam<ContractAddress>) => QueryKey;
                 readonly revealer: {

@@ -1,15 +1,9 @@
 {
   "version": "v1",
   "packages": {
-    "@thirdweb-dev/react": {
-      "signature": "751712fb1b10abbe4329d12ba811358d",
-      "file": true,
-      "replaced": "^3.6.9"
-    },
-    "@thirdweb-dev/sdk": {
-      "signature": "aa2b30b620cd01acbc0f3efd777c076c",
-      "file": true,
-      "replaced": "^3.6.9"
+    "@thirdweb-dev/react-native": {
+      "signature": "2f9023f42d43477875d996bae6014a59",
+      "file": true
     }
   }
 }

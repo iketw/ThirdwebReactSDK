@@ -77,7 +77,7 @@ export const fetchWallets = async () => {
     });
 };
 
-export const log = (message: string, ...optionalParams: any[]) => {
+export const log = (message: any, ...optionalParams: any[]) => {
     console.log('(JD)', message, ...optionalParams);
 };
 
