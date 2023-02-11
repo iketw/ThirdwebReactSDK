@@ -44,8 +44,6 @@ export function deepLink(appUrl: string, uri?: string) {
 
     log('formattedUri', formattedUri);
     Linking.openURL(formattedUri);
-
-    // Linking.openURL(uri.replace('wc:', 'wc://'));
 }
 
 export function getSigner({ chainId }: { chainId?: number } = {}) {

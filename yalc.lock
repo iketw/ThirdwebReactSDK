@@ -1,8 +1,20 @@
 {
   "version": "v1",
   "packages": {
-    "@thirdweb-dev/react-native": {
-      "signature": "2f9023f42d43477875d996bae6014a59",
+    "@thirdweb-dev/chains": {
+      "signature": "cb680cc245310a6bf8bc9b565251d181",
+      "file": true
+    },
+    "@thirdweb-dev/sdk": {
+      "signature": "af265280d90fb9eb338513372352c1a3",
+      "file": true
+    },
+    "@thirdweb-dev/react-core": {
+      "signature": "2b92d2bafc8ec68a8f927fe6dd580ada",
+      "file": true
+    },
+    "@thirdweb-dev/react-native-compat": {
+      "signature": "6e764bd1c6a3f47dfaa5ae686813f2bb",
       "file": true
     }
   }
